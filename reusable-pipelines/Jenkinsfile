@@ -15,26 +15,35 @@ pipeline {
                     docker version
                     dotnet --list-sdks
                     dotnet --list-runtimes
+                    ls -al
                 '''
             }
         }
 
-        // stage('Build') {
-        //     steps {
-        //         echo "Building release ${RELEASE} with log level ${LOG_LEVEL}..."
-        //     }
-        // }
+        stage('Build') {
+            steps {
+                echo "Building version ${VERSION} with suffix: ${VERSION_RC}"
+                sh 'dotnet build -p:VersionPrefix="${VERSION}" --version-suffix "${VERSION_RC}" ./reusable-pipelines/src/Pi.Web/Pi.Web.csproj'
+            }
+        }
 
-        // stage('Test') {
-        //     steps {
-        //         echo "Testing release ${RELEASE}"
-        //     }
-        // }
+        stage('Test') {
+            steps {
+                dir('./reusable-pipelines/src') {
+                   sh '''
+                        dotnet test --logger "trx;LogFileName=Pi.Math.trx" Pi.Math.Tests/Pi.Math.Tests.csproj
+                        dotnet test --logger "trx;LogFileName=Pi.Runtime.trx" Pi.Runtime.Tests/Pi.Runtime.Tests.csproj
+                    '''
+                    mstest testResultsFile:"**/*.trx", keepLongStdio: true 
+                }
+            }
+        }
 
-        // stage('Smoke Test') {
-            
-        // }
+        stage('Smoke Test') {
+            steps {
+                sh 'dotnet ./reusable-pipelines/src/Pi.Web/bin/debug/netcoreapp3.1/Pi.Web.dll'
+            }
+        }
 
     }
 }
-
