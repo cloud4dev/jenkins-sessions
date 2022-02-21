@@ -1,5 +1,5 @@
 // https://github.com/cloud4dev/jenkins-library-review.git
-library identifier: 'jenkins-library-review@master',
+library identifier: 'jenkins-library-review@main',
         retriever: modernSCM([$class: 'GitSCMSource', remote: 'https://github.com/cloud4dev/jenkins-library-review'])
 
 pipeline {
