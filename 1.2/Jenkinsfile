@@ -17,10 +17,16 @@ pipeline {
             // }
             parallel {
                 stage('linux-arm64') {
-                    echo "Building release ${RELEASE} for ${STAGE_NAME} log level ${LOG_LEVEL}..."
+                    steps {
+                        echo "Building release ${RELEASE} for ${STAGE_NAME} log level ${LOG_LEVEL}..."
+                    }
+                    
                 }
                 stage('linux-amd64') {
-                    echo "Building release ${RELEASE} for ${STAGE_NAME} log level ${LOG_LEVEL}..."
+                    steps {
+                        echo "Building release ${RELEASE} for ${STAGE_NAME} log level ${LOG_LEVEL}..."
+                    }
+                    
                 }
             }
         }
