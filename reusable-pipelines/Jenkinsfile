@@ -41,7 +41,7 @@ pipeline {
 
         stage('Smoke Test') {
             steps {
-                sh 'dotnet ./reusable-pipelines/src/Pi.Web/bin/debug/netcoreapp3.1/Pi.Web.dll'
+                sh 'dotnet ./reusable-pipelines/src/Pi.Web/bin/Debug/netcoreapp3.1/Pi.Web.dll'
             }
         }
 
