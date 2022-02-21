@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         VERSION="0.0.1"
-        VERSION_RC="RC.2"
+        VERSION_RC="rc.2"
     }
 
     stages {
@@ -15,15 +15,13 @@ pipeline {
                     docker version
                     dotnet --list-sdks
                     dotnet --list-runtimes
-
                 '''
             }
-           
         }
 
         // stage('Build') {
         //     steps {
-        //         // echo "Testing release ${RELEASE}"
+        //         echo "Building release ${RELEASE} with log level ${LOG_LEVEL}..."
         //     }
         // }
 
@@ -33,11 +31,10 @@ pipeline {
         //     }
         // }
 
-        stage('Smoke Test') {
-           
-        }
+        // stage('Smoke Test') {
+            
+        // }
 
     }
-
-    
 }
+
