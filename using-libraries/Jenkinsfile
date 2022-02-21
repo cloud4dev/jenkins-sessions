@@ -5,6 +5,11 @@ library identifier: 'jenkins-library-review@main',
 pipeline {
     agent any
     stages {
-        auditTools()
+        stage('Audit tools') {
+            steps {
+                auditTools()
+            }
+        }
+        
     }
 }
