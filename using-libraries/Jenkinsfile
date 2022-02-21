@@ -1,0 +1,10 @@
+// https://github.com/cloud4dev/jenkins-library-review.git
+library identifier: 'jenkins-library-review@main',
+        retriever: moderSCM([$class: 'GitSCMSource', remote: 'https://github.com/cloud4dev/jenkins-library-review'])
+
+pipeline {
+    agent any
+    stages {
+        auditTools()
+    }
+}
