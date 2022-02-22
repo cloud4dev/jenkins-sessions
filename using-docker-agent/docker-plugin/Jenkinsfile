@@ -1,0 +1,16 @@
+def image
+
+pipeline {
+    agent any
+    stages {
+        stage('Build') {
+            steps {
+                script {
+                    image = docker.build("cloud4dev/jenkins-pipeline.demos:0.0.1", "--pull -f using-docker-agent/Dockerfile using-docker-agent")
+                }
+            }
+        }
+
+    }
+
+}
