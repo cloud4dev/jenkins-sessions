@@ -1,68 +1,69 @@
+// pipeline {
+//     agent {
+//             dockerfile {
+//                 dir 'using-docker-agent'
+//             }
+//     }
+
+//     stages {
+//         stage('verify') {
+//             steps {
+//                 sh '''
+//                 dotnet --list-sdks
+//                 dotnet --list-runtimes
+//             '''
+//             }
+//         }
+
+//     }
+// }
+
 pipeline {
     agent {
-            dockerfile {
-                dir 'using-docker-agent'
-            }
+        docker {
+            dir 'using-docker-agent'
+            fileName 'Dockerfile.sdk'
+        }
     }
 
+     environment {
+         HOME = '/tmp'
+     }
+
     stages {
-        stage('verify') {
+
+        stage('Audit tools') {
             steps {
                 sh '''
-                dotnet --list-sdks
-                dotnet --list-runtimes
-            '''
+                    dotnet --list-sdks
+                    dotnet --list-runtimes
+                '''
+                sh 'printenv'
+                sh 'ls -l "$WORKSPACE"'
             }
         }
 
+        stage('Build') {
+            steps {
+                sh 'dotnet build "$WORKSPACE/using-docker-agent/src/Pi.Web/Pi.Web.csproj"'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                dir("$WORKSPACE/using-docker-agent/src") {
+                   sh '''
+                        dotnet test Pi.Math.Tests/Pi.Math.Tests.csproj
+                        dotnet test Pi.Runtime.Tests/Pi.Runtime.Tests.csproj
+                    '''
+                }
+            }
+        }
+
+        stage('Smoke Test') {
+            steps {
+                sh 'dotnet "$WORKSPACE/using-docker-agent/src/Pi.Web/bin/Debug/netcoreapp3.1/Pi.Web.dll"'
+            }
+        }
     }
 }
-
-// pipeline {
-//     agent {
-//         docker {
-//             image 'mcr.microsoft.com/dotnet/core/sdk:3.1.101'
-//         }
-//     }
-
-//      environment {
-//          HOME = '/tmp'
-//      }
-
-//     stages {
-
-//         stage('Audit tools') {
-//             steps {
-//                 sh '''
-//                     dotnet --list-sdks
-//                     dotnet --list-runtimes
-//                 '''
-//                 sh 'printenv'
-//                 sh 'ls -l "$WORKSPACE"'
-//             }
-//         }
-
-//         stage('Build') {
-//             steps {
-//                 sh 'dotnet build "$WORKSPACE/using-docker-agent/src/Pi.Web/Pi.Web.csproj"'
-//             }
-//         }
-
-//         stage('Test') {
-//             steps {
-//                 dir("$WORKSPACE/using-docker-agent/src") {
-//                    sh '''
-//                         dotnet test Pi.Math.Tests/Pi.Math.Tests.csproj
-//                         dotnet test Pi.Runtime.Tests/Pi.Runtime.Tests.csproj
-//                     '''
-//                 }
-//             }
-//         }
-
-//         stage('Smoke Test') {
-//             steps {
-//                 sh 'dotnet "$WORKSPACE/using-docker-agent/src/Pi.Web/bin/Debug/netcoreapp3.1/Pi.Web.dll"'
-//             }
-//         }
-//     }
-// }
