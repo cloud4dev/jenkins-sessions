@@ -22,7 +22,7 @@ pipeline {
     agent {
         dockerfile {
             dir 'using-docker-agent'
-            fileName 'Dockerfile.sdk'
+            filename 'Dockerfile.sdk'
         }
     }
 
