@@ -20,7 +20,7 @@
 
 pipeline {
     agent {
-        docker {
+        dockerfile {
             dir 'using-docker-agent'
             fileName 'Dockerfile.sdk'
         }
