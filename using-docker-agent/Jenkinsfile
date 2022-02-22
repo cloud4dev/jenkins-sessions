@@ -5,8 +5,9 @@ pipeline {
         }
     }
 
-    // environment {
-    // }
+     environment {
+         HOME = '/tmp'
+     }
 
     stages {
 
