@@ -11,6 +11,16 @@ pipeline {
             }
         }
 
+        stage('Smoke test') {
+            steps {
+                script {
+                    container = image.run()
+                    container.stop()
+                    
+                }
+            }
+        }
+
     }
 
 }
