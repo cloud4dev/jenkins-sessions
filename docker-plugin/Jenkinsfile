@@ -21,6 +21,17 @@ pipeline {
             }
         }
 
+        stage('Push') {
+            steps {
+                script {
+                    withDockerRegistry([credentialsId: "docker-hub", url:""]) {
+                        image.push()
+                    }
+                    
+                }
+            }
+        }
+
     }
 
 }
